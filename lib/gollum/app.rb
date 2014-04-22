@@ -5,6 +5,7 @@ require 'gollum-lib'
 require 'mustache/sinatra'
 require 'useragent'
 require 'stringex'
+require 'rack/flash'
 
 require 'gollum'
 require 'gollum/views/layout'
@@ -41,6 +42,7 @@ end
 module Precious
   class App < Sinatra::Base
     register Mustache::Sinatra
+    use Rack::Flash
     include Precious::Helpers
 
     dir     = File.dirname(File.expand_path(__FILE__))
@@ -86,6 +88,12 @@ module Precious
     end
 
     before do
+      @flashMessage = flash[:success] || ''
+      @flashError   = flash[:error]   || ''
+      @currentUser  = "anonymous"
+      @currentUser  = env['warden'].user.userName if 
+        env['warden'].authenticated?
+
       @base_url = url('/', false).chomp('/')
       # above will detect base_path when it's used with map in a config.ru
       settings.wiki_options.merge!({ :base_path => @base_url })

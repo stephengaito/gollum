@@ -52,7 +52,13 @@
 </head>
 <body>
 
+{{#has_flash}}
+<div class="{{flash_class}}">{{flash_content}}</div>
+{{/has_flash}}
+
 {{{yield}}}
+
+<div class="current-user">{{current_user}}</div>
 
 </body>
 </html>

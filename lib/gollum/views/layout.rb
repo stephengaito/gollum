@@ -32,6 +32,22 @@ module Precious
         @js
       end
 
+      def has_flash
+        ! @flashMessage.empty? || ! @flashError.empty?
+      end
+
+      def flash_class
+        @flashError.empty? ? "flash-message" : "flash-error"
+      end
+
+      def flash_content
+        @flashError || @flashMessage
+      end
+
+      def current_user
+        @currentUser
+      end
+
     end
   end
 end
