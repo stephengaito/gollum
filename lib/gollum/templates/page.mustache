@@ -8,12 +8,11 @@ Mousetrap.bind(['e'], function( e ) {
 <div id="wiki-wrapper" class="page">
 <div id="head">
   <h1>{{page_header}}</h1>
+  {{>bethany}}
   <ul class="actions">
     <li class="minibutton">
       {{>searchbar}}
     </li>
-    <li class="minibutton"><a href="{{base_url}}/"
-       class="action-home-page">Home</a></li>
     <li class="minibutton"><a href="{{base_url}}/pages"
       class="action-all-pages">All</a></li>
     <li class="minibutton"><a href="{{base_url}}/fileview"
