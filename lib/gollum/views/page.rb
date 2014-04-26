@@ -9,13 +9,35 @@ module Precious
       @@to_xml       = { :save_with => Nokogiri::XML::Node::SaveOptions::DEFAULT_XHTML ^ 1, :indent => 0, :encoding => 'UTF-8' }
 
       def back_reference
-        backReference = @page.escaped_url_path+'/statement.html'
+        backReference = @page.escaped_url_path
+        backReference = File.dirname(backReference) if backReference =~ /\/[Ii]tem\-\d+$/
+        backReference = backReference+'.html'
         return "<p>Bank statements: <a href=\"/#{backReference}\" target=\"_blank\">#{@page.escaped_url_path}</a></p>" if
           File.exists?('/home/www/html/'+backReference)
         backReference = @page.escaped_url_path+'/index.html'
         return "<p>Bank statements: <a href=\"/#{backReference}\" target=\"_blank\">#{@page.escaped_url_path}</a></p>" if
           File.exists?('/home/www/html/'+backReference)
         ''
+      end
+
+      def breadcrumb
+        if @path
+          path       = Pathname.new(@path)
+          breadcrumb = [%{<a href="#{@base_url}/pages/">Home</a>}]
+          path.descend do |crumb|
+            title = crumb.basename
+
+            if title == path.basename
+              breadcrumb << title
+            else
+              breadcrumb << %{<a href="#{@base_url}/pages/#{crumb}/">#{title}</a>}
+            end
+          end
+
+          breadcrumb.join(" / ")
+        else
+          "Home"
+        end
       end
 
       def title
