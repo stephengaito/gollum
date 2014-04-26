@@ -8,6 +8,16 @@ module Precious
       DEFAULT_AUTHOR = 'you'
       @@to_xml       = { :save_with => Nokogiri::XML::Node::SaveOptions::DEFAULT_XHTML ^ 1, :indent => 0, :encoding => 'UTF-8' }
 
+      def back_reference
+        backReference = @page.escaped_url_path+'/statement.html'
+        return "<p>Bank statements: <a href=\"/#{backReference}\" target=\"_blank\">#{@page.escaped_url_path}</a></p>" if
+          File.exists?('/home/www/html/'+backReference)
+        backReference = @page.escaped_url_path+'/index.html'
+        return "<p>Bank statements: <a href=\"/#{backReference}\" target=\"_blank\">#{@page.escaped_url_path}</a></p>" if
+          File.exists?('/home/www/html/'+backReference)
+        ''
+      end
+
       def title
         h1 = @h1_title ? page_header_from_content(@content) : false
         h1 || @page.url_path_title
